@@ -18,7 +18,7 @@ class ProductManager extends StatefulWidget {
 }
 
 class _ProductManagerState extends State<ProductManager> {
-  List<String> _products = [];
+  List<String> _products = []; //final List<String> _products = const [];
 
   void _addProduct(String product) {
     setState(() {
