@@ -26,10 +26,10 @@ class Products extends StatelessWidget {
         itemBuilder: _buildProductItem,
       );
     } else {
-      // productCards = Center(
-      //   child: Text('No products found, please add some'),
-      // );
-      productCards = Container();
+      productCards = Center(
+        child: Text('No products found, please add some'),
+      );
+      // productCards = Container();
     }
     return productCards;
   }
