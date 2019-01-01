@@ -18,13 +18,20 @@ class ProductManager extends StatefulWidget {
 }
 
 class _ProductManagerState extends State<ProductManager> {
-  List<Map<String, String>> _products = []; //final List<String> _products = const [];
+  List<Map<String, String>> _products =
+      []; //final List<String> _products = const [];
 
   void _addProduct(Map<String, String> product) {
     setState(() {
       _products.add(product);
     });
     print(_products);
+  }
+
+  void _deleteProduct(int index) {
+    setState(() {
+      _products.removeAt(index);
+    });
   }
 
   @override
@@ -52,7 +59,7 @@ class _ProductManagerState extends State<ProductManager> {
           child: ProductControl(_addProduct),
         ),
         Expanded(
-          child: Products(_products),
+          child: Products(_products, deleteProduct: _deleteProduct),
         ),
       ],
     );
