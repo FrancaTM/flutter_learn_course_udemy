@@ -27,6 +27,23 @@ class MyApp extends StatelessWidget {
         '/': (BuildContext context) => ProductsPage(),
         '/admin': (BuildContext context) => ProductsAdminPage(),
       },
+      onGenerateRoute: (RouteSettings settings) {
+        final List<String> pathElements = settings.name.split('/');
+
+        if (pathElements[0] != '') {
+          return null;
+        }
+
+        if (pathElements[1] == 'product') {
+          final int index = int.parse(pathElements[2]);
+          return MaterialPageRoute(
+            builder: (BuildContext context) =>
+                ProductPage(products[index]['title'], products[index]['image']),
+          );
+        }
+
+        return null;
+      },
     );
   }
 }
