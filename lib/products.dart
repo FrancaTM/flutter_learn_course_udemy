@@ -16,7 +16,14 @@ class Products extends StatelessWidget {
           Container(
             padding: EdgeInsets.only(top: 10.0),
             // color: Colors.red,
-            child: Text(products[index]['title']),
+            child: Text(
+              products[index]['title'],
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+                fontFamily: 'Oswald',
+              ),
+            ),
           ),
           ButtonBar(
             alignment: MainAxisAlignment.center,
