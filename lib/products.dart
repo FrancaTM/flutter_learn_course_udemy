@@ -57,7 +57,7 @@ class Products extends StatelessWidget {
               horizontal: 6.0,
               vertical: 4.0,
             ),
-            child: Text('Union Square, San Francisco'),
+            child: Text(products[index]['address']),
             decoration: BoxDecoration(
               border: Border.all(
                 color: Colors.grey,

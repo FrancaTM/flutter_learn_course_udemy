@@ -15,6 +15,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
   String _titleValue;
   String _descriptionValue;
   double _priceValue;
+  String _addressValue;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +49,14 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
               });
             },
           ),
+          TextField(
+            decoration: InputDecoration(labelText: 'Product Address'),
+            onChanged: (String value) {
+              setState(() {
+                _addressValue = value;
+              });
+            },
+          ),
           SizedBox(height: 10.0),
           RaisedButton(
             child: Text('Save'),
@@ -58,6 +67,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
                 'title': _titleValue,
                 'description': _descriptionValue,
                 'price': _priceValue,
+                'address': _addressValue,
                 'image': 'assets/food.jpg'
               };
               widget.addProduct(product);
