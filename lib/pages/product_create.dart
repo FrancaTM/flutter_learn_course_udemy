@@ -23,6 +23,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
       margin: EdgeInsets.all(10.0),
       child: ListView(
         children: <Widget>[
+          // TODO: Refatorar textfields?
           TextField(
             decoration: InputDecoration(labelText: 'Product Title'),
             onChanged: (String value) {
@@ -58,6 +59,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
             },
           ),
           SizedBox(height: 10.0),
+          // TODO: Refatorar RaisedButton?
           RaisedButton(
             child: Text('Save'),
             color: Theme.of(context).accentColor,

@@ -34,6 +34,7 @@ class _AuthPageState extends State<AuthPage> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
+                // TODO: Refatorar textfields?
                 TextField(
                   decoration: InputDecoration(labelText: 'Email', filled: true, fillColor: Colors.white),
                   keyboardType: TextInputType.emailAddress,
@@ -63,6 +64,7 @@ class _AuthPageState extends State<AuthPage> {
                   },
                 ),
                 SizedBox(height: 10.0),
+                // Refatorar RaisedButton?
                 RaisedButton(
                   child: Text('Login'),
                   color: Theme.of(context).accentColor,
