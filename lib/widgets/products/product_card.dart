@@ -11,6 +11,43 @@ class ProductCard extends StatelessWidget {
 
   ProductCard(this.product, this.productIndex);
 
+  Widget _buildTitlePriceRow() {
+    return Container(
+      padding: EdgeInsets.only(top: 10.0),
+      // color: Colors.red,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Flexible(
+            flex: 2,
+            child: TitleDefault(product['title']),
+          ),
+          SizedBox(width: 10.0),
+          PriceTag(product['price'].toString()),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionButtons(BuildContext context) {
+    return ButtonBar(
+      alignment: MainAxisAlignment.center,
+      children: <Widget>[
+        IconButton(
+          icon: Icon(Icons.info),
+          color: Theme.of(context).accentColor,
+          onPressed: () => Navigator.pushNamed<bool>(
+              context, '/product/' + productIndex.toString()),
+        ),
+        IconButton(
+          icon: Icon(Icons.favorite_border),
+          color: Colors.red,
+          onPressed: () {},
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -18,38 +55,9 @@ class ProductCard extends StatelessWidget {
         children: <Widget>[
           Image.asset(product['image']),
           // SizedBox(height: 10.0),
-          Container(
-            padding: EdgeInsets.only(top: 10.0),
-            // color: Colors.red,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Flexible(
-                  flex: 2,
-                  child: TitleDefault(product['title']),
-                ),
-                SizedBox(width: 10.0),
-                PriceTag(product['price'].toString()),
-              ],
-            ),
-          ),
+          _buildTitlePriceRow(),
           AddressTag(product['address']),
-          ButtonBar(
-            alignment: MainAxisAlignment.center,
-            children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.info),
-                color: Theme.of(context).accentColor,
-                onPressed: () => Navigator.pushNamed<bool>(
-                    context, '/product/' + productIndex.toString()),
-              ),
-              IconButton(
-                icon: Icon(Icons.favorite_border),
-                color: Colors.red,
-                onPressed: () {},
-              ),
-            ],
-          ),
+          _buildActionButtons(context),
         ],
       ),
     );
