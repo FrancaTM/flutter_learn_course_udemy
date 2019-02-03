@@ -94,10 +94,18 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
           _buildAddressTextField(),
           SizedBox(height: 10.0),
           // TODO: Refatorar RaisedButton?
-          RaisedButton(
-            child: Text('Save'),
-            textColor: Colors.white,
-            onPressed: _submitForm,
+          // RaisedButton(
+          //   child: Text('Save'),
+          //   textColor: Colors.white,
+          //   onPressed: _submitForm,
+          // ),
+          GestureDetector(
+            onTap: _submitForm,
+            child: Container(
+              padding: EdgeInsets.all(5.0),
+              color: Colors.green,
+              child: Text('Custom button'),
+            ),
           ),
         ],
       ),
