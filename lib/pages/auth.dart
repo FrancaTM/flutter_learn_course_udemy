@@ -95,7 +95,6 @@ class _AuthPageState extends State<AuthPage> {
                   // Refatorar RaisedButton?
                   RaisedButton(
                     child: Text('Login'),
-                    color: Theme.of(context).accentColor,
                     textColor: Colors.white,
                     onPressed: _submitForm,
                   ),

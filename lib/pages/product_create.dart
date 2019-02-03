@@ -96,7 +96,6 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
           // TODO: Refatorar RaisedButton?
           RaisedButton(
             child: Text('Save'),
-            color: Theme.of(context).accentColor,
             textColor: Colors.white,
             onPressed: _submitForm,
           ),
