@@ -12,10 +12,13 @@ class ProductCreatePage extends StatefulWidget {
 }
 
 class _ProductCreatePageState extends State<ProductCreatePage> {
-  String _titleValue;
-  String _descriptionValue;
-  double _priceValue;
-  String _addressValue;
+  final Map<String, dynamic> _formData = {
+    'title': null,
+    'description': null,
+    'price': null,
+    'address': null,
+    'image': 'assets/food.jpg'
+  };
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Widget _buildTitleTextField() {
@@ -29,9 +32,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
         }
       },
       onSaved: (String value) {
-        setState(() {
-          _titleValue = value;
-        });
+        _formData['title'] = value;
       },
     );
   }
@@ -46,9 +47,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
       },
       maxLines: null,
       onSaved: (String value) {
-        setState(() {
-          _descriptionValue = value;
-        });
+        _formData['description'] = value;
       },
     );
   }
@@ -64,9 +63,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
       },
       keyboardType: TextInputType.number,
       onSaved: (String value) {
-        setState(() {
-          _priceValue = double.parse(value);
-        });
+        _formData['price'] = double.parse(value);
       },
     );
   }
@@ -75,9 +72,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
     return TextFormField(
       decoration: InputDecoration(labelText: 'Product Address'),
       onSaved: (String value) {
-        setState(() {
-          _addressValue = value;
-        });
+        _formData['address'] = value;
       },
     );
   }
@@ -87,14 +82,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
       return;
     }
     _formKey.currentState.save();
-    final Map<String, dynamic> product = {
-      'title': _titleValue,
-      'description': _descriptionValue,
-      'price': _priceValue,
-      'address': _addressValue,
-      'image': 'assets/food.jpg'
-    };
-    widget.addProduct(product);
+    widget.addProduct(_formData);
     Navigator.pushReplacementNamed(context, '/products');
   }
 
