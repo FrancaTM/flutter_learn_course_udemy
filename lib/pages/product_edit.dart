@@ -175,7 +175,6 @@ class _ProductEditPageState extends State<ProductEditPage> {
       );
     } else {
       updateProduct(
-        selectedProductIndex,
         Product(
           title: _formData['title'],
           description: _formData['description'],
