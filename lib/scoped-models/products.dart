@@ -4,20 +4,43 @@ import '../models/product.dart';
 
 class ProductsModel extends Model {
   List<Product> _products = [];
+  int _selectedProductIndex;
 
   List<Product> get products {
     return List.from(_products);
   }
 
+  int get selectedProductIndex {
+    return _selectedProductIndex;
+  }
+
+  Product get selectedProduct {
+    if (_selectedProductIndex == null) {
+      return null;
+    }
+    return _products[selectedProductIndex];
+  }
+
   void addProduct(Product product) {
     _products.add(product);
+    unselectProduct();
   }
 
-  void updateProduct(int index, Product product) {
-    _products[index] = product;
+  void updateProduct(Product product) {
+    _products[_selectedProductIndex] = product;
+    unselectProduct();
   }
 
-  void deleteProduct(int index) {
-    _products.removeAt(index);
+  void deleteProduct() {
+    _products.removeAt(_selectedProductIndex);
+    unselectProduct();
+  }
+
+  void selectProduct(int index) {
+    _selectedProductIndex = index;
+  }
+
+  void unselectProduct() {
+    _selectedProductIndex = null;
   }
 }
