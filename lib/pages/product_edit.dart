@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/helpers/ensure-visible.dart';
+import '../models/product.dart';
 
 class ProductEditPage extends StatefulWidget {
   final Function addProduct;
   final Function updateProduct;
-  final Map<String, dynamic> product;
+  final Product product;
   final int productIndex;
 
   ProductEditPage(
@@ -38,7 +39,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         focusNode: _titleFocusNode,
         decoration: InputDecoration(labelText: 'Product Title'),
         // TODO: Refatorar para função auxiliar!
-        initialValue: widget.product == null ? '' : widget.product['title'],
+        initialValue: widget.product == null ? '' : widget.product.title,
         // autovalidate: true,
         validator: (String value) {
           // if (value.trim().length <= 0) {
@@ -59,8 +60,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       child: TextFormField(
         focusNode: _descriptionFocusNode,
         decoration: InputDecoration(labelText: 'Product Description'),
-        initialValue:
-            widget.product == null ? '' : widget.product['description'],
+        initialValue: widget.product == null ? '' : widget.product.description,
         validator: (String value) {
           if (value.isEmpty || value.length < 10) {
             return 'Description is required and should be 10+ characters long';
@@ -81,7 +81,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         focusNode: _priceFocusNode,
         decoration: InputDecoration(labelText: 'Product Price'),
         initialValue:
-            widget.product == null ? '' : widget.product['price'].toString(),
+            widget.product == null ? '' : widget.product.price.toString(),
         validator: (String value) {
           if (value.isEmpty ||
               !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
@@ -102,7 +102,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
       child: TextFormField(
         focusNode: _addressFocusNode,
         decoration: InputDecoration(labelText: 'Product Address'),
-        initialValue: widget.product == null ? '' : widget.product['address'],
+        initialValue: widget.product == null ? '' : widget.product.address,
         onSaved: (String value) {
           _formData['address'] = value;
         },
@@ -160,9 +160,26 @@ class _ProductEditPageState extends State<ProductEditPage> {
     }
     _formKey.currentState.save();
     if (widget.product == null) {
-      widget.addProduct(_formData);
+      widget.addProduct(
+        Product(
+          title: _formData['title'],
+          description: _formData['description'],
+          price: _formData['price'],
+          image: _formData['image'],
+          address: _formData['address'],
+        ),
+      );
     } else {
-      widget.updateProduct(widget.productIndex, _formData);
+      widget.updateProduct(
+        widget.productIndex,
+        Product(
+          title: _formData['title'],
+          description: _formData['description'],
+          price: _formData['price'],
+          image: _formData['image'],
+          address: _formData['address'],
+        ),
+      );
     }
 
     Navigator.pushReplacementNamed(context, '/products');
