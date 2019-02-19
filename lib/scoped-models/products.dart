@@ -43,4 +43,19 @@ class ProductsModel extends Model {
   void unselectProduct() {
     _selectedProductIndex = null;
   }
+
+  void toggleProductFavoriteStatus() {
+    final bool isCurrentlyFavorite = selectedProduct.isFavorite;
+    final bool newFavoriteState = !isCurrentlyFavorite;
+    // TODO: Refactor and simplify?
+    final Product updatedProduct = Product(
+        title: selectedProduct.title,
+        description: selectedProduct.description,
+        price: selectedProduct.price,
+        image: selectedProduct.image,
+        address: selectedProduct.address,
+        isFavorite: newFavoriteState);
+    _products[_selectedProductIndex] = updatedProduct;
+    unselectProduct();
+  }
 }
