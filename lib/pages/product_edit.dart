@@ -165,23 +165,19 @@ class _ProductEditPageState extends State<ProductEditPage> {
     _formKey.currentState.save();
     if (selectedProductIndex == null) {
       addProduct(
-        Product(
-          title: _formData['title'],
-          description: _formData['description'],
-          price: _formData['price'],
-          image: _formData['image'],
-          address: _formData['address'],
-        ),
+        _formData['title'],
+        _formData['description'],
+        _formData['image'],
+        _formData['price'],
+        _formData['address'],
       );
     } else {
       updateProduct(
-        Product(
-          title: _formData['title'],
-          description: _formData['description'],
-          price: _formData['price'],
-          image: _formData['image'],
-          address: _formData['address'],
-        ),
+        _formData['title'],
+        _formData['description'],
+        _formData['image'],
+        _formData['price'],
+        _formData['address'],
       );
     }
 
