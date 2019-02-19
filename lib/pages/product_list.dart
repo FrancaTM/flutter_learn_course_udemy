@@ -30,7 +30,7 @@ class ProductListPage extends StatelessWidget {
         return ListView.builder(
           itemBuilder: (BuildContext context, int index) {
             return Dismissible(
-              key: Key(model.products[index].title),
+              key: Key(model.allProducts[index].title),
               onDismissed: (DismissDirection direction) {
                 if (direction == DismissDirection.endToStart) {
                   model.selectProduct(index);
