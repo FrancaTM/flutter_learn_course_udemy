@@ -24,16 +24,19 @@ class ProductsModel extends Model {
   void addProduct(Product product) {
     _products.add(product);
     unselectProduct();
+    notifyListeners();
   }
 
   void updateProduct(Product product) {
     _products[_selectedProductIndex] = product;
     unselectProduct();
+    notifyListeners();
   }
 
   void deleteProduct() {
     _products.removeAt(_selectedProductIndex);
     unselectProduct();
+    notifyListeners();
   }
 
   void selectProduct(int index) {
@@ -57,5 +60,6 @@ class ProductsModel extends Model {
         isFavorite: newFavoriteState);
     _products[_selectedProductIndex] = updatedProduct;
     unselectProduct();
+    notifyListeners();
   }
 }
