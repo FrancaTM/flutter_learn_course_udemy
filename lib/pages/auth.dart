@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:scoped_model/scoped_model.dart';
+
+import '../scoped-models/main.dart';
+
 class AuthPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -72,12 +76,12 @@ class _AuthPageState extends State<AuthPage> {
     );
   }
 
-  void _submitForm() {
+  void _submitForm(Function login) {
     if (!_formKey.currentState.validate() || !_formData['acceptTerms']) {
       return;
     }
     _formKey.currentState.save();
-    print(_formData);
+    login(_formData['email'], _formData['password']);
     Navigator.pushReplacementNamed(context, '/products');
   }
 
@@ -109,10 +113,15 @@ class _AuthPageState extends State<AuthPage> {
                     _buildAcceptSwitch(),
                     SizedBox(height: 10.0),
                     // Refatorar RaisedButton?
-                    RaisedButton(
-                      child: Text('Login'),
-                      textColor: Colors.white,
-                      onPressed: _submitForm,
+                    ScopedModelDescendant<MainModel>(
+                      builder: (BuildContext context, Widget child,
+                          MainModel model) {
+                        return RaisedButton(
+                          child: Text('Login'),
+                          textColor: Colors.white,
+                          onPressed: () => _submitForm(model.login),
+                        );
+                      },
                     ),
                   ],
                 ),
