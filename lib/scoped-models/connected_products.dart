@@ -10,6 +10,7 @@ mixin ConnectedProductsModel on Model {
   List<Product> _products = [];
   int _selProductIndex;
   User _authenticatedUser;
+  bool _isLoading = false;
 
   void unselectProduct() {
     _selProductIndex = null;
@@ -18,6 +19,7 @@ mixin ConnectedProductsModel on Model {
 
   void addProduct(String title, String description, String image, double price,
       String address) {
+    _isLoading = true;
     final Map<String, dynamic> productData = {
       'title': title,
       'description': description,
@@ -33,6 +35,7 @@ mixin ConnectedProductsModel on Model {
             'https://flutter-course-products-10856.firebaseio.com/products.json',
             body: json.encode(productData))
         .then((http.Response response) {
+      _isLoading = false;
       final Map<String, dynamic> responseData = json.decode(response.body);
       final Product newProduct = Product(
           id: responseData['name'],
@@ -44,6 +47,7 @@ mixin ConnectedProductsModel on Model {
           userId: _authenticatedUser.id,
           address: address);
       _products.add(newProduct);
+      // _isLoading = false;
       notifyListeners();
     });
   }
@@ -105,10 +109,12 @@ mixin ProductsModel on ConnectedProductsModel {
   }
 
   void fetchProducts() {
+    _isLoading = true;
     http
         .get(
             'https://flutter-course-products-10856.firebaseio.com/products.json')
         .then((http.Response response) {
+      _isLoading = false;
       final List<Product> fetchedProductList = [];
       final Map<String, dynamic> productListData = json.decode(response.body);
       productListData.forEach((String productId, dynamic productData) {
@@ -124,6 +130,7 @@ mixin ProductsModel on ConnectedProductsModel {
         fetchedProductList.add(product);
       });
       _products = fetchedProductList;
+      // _isLoading = false;
       notifyListeners();
     });
   }
@@ -155,5 +162,11 @@ mixin UserModel on ConnectedProductsModel {
   void login(String email, String password) {
     _authenticatedUser =
         User(id: 'fasdfasdf', email: email, password: password);
+  }
+}
+
+mixin UtilityModel on ConnectedProductsModel {
+  bool get isLoading {
+    return _isLoading;
   }
 }
