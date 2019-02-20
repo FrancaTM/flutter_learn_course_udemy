@@ -102,6 +102,15 @@ mixin ProductsModel on ConnectedProductsModel {
     }
   }
 
+  void fetchProducts() {
+    http
+        .get(
+            'https://flutter-course-products-10856.firebaseio.com/products.json')
+        .then((http.Response response) {
+      print(json.decode(response.body));
+    });
+  }
+
   void toggleProductFavoriteStatus() {
     final bool isCurrentlyFavorite = selectedProduct.isFavorite;
     final bool newFavoriteState = !isCurrentlyFavorite;
