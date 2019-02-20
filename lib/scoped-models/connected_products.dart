@@ -26,19 +26,24 @@ mixin ConnectedProductsModel on Model {
       'price': price,
       'address': address
     };
-    http.post(
-        'https://flutter-course-products-10856.firebaseio.com/products.json',
-        body: json.encode(productData));
-    final Product newProduct = Product(
-        title: title,
-        description: description,
-        image: image,
-        price: price,
-        userEmail: _authenticatedUser.email,
-        userId: _authenticatedUser.id,
-        address: address);
-    _products.add(newProduct);
-    notifyListeners();
+    http
+        .post(
+            'https://flutter-course-products-10856.firebaseio.com/products.json',
+            body: json.encode(productData))
+        .then((http.Response response) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final Product newProduct = Product(
+          id: responseData['name'],
+          title: title,
+          description: description,
+          image: image,
+          price: price,
+          userEmail: _authenticatedUser.email,
+          userId: _authenticatedUser.id,
+          address: address);
+      _products.add(newProduct);
+      notifyListeners();
+    });
   }
 }
 
