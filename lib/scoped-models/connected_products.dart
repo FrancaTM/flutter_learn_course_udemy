@@ -24,7 +24,9 @@ mixin ConnectedProductsModel on Model {
       'image':
           'http://newspositivas.com/wp-content/uploads/2018/07/naom_5a4f9bdfb0e6b.jpg',
       'price': price,
-      'address': address
+      'address': address,
+      'userEmail': _authenticatedUser.email,
+      'userId': _authenticatedUser.id
     };
     http
         .post(
@@ -107,7 +109,22 @@ mixin ProductsModel on ConnectedProductsModel {
         .get(
             'https://flutter-course-products-10856.firebaseio.com/products.json')
         .then((http.Response response) {
-      print(json.decode(response.body));
+      final List<Product> fetchedProductList = [];
+      final Map<String, dynamic> productListData = json.decode(response.body);
+      productListData.forEach((String productId, dynamic productData) {
+        final Product product = Product(
+            id: productId,
+            title: productData['title'],
+            description: productData['description'],
+            price: productData['price'],
+            image: productData['image'],
+            userEmail: productData['userEmail'],
+            userId: productData['userId'],
+            address: productData['address']);
+        fetchedProductList.add(product);
+      });
+      _products = fetchedProductList;
+      notifyListeners();
     });
   }
 
