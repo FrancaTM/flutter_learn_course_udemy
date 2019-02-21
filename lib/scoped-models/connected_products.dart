@@ -38,7 +38,6 @@ mixin ConnectedProductsModel on Model {
             'https://flutter-course-products-10856.firebaseio.com/products.json',
             body: json.encode(productData))
         .then((http.Response response) {
-      _isLoading = false;
       final Map<String, dynamic> responseData = json.decode(response.body);
       final Product newProduct = Product(
           id: responseData['name'],
@@ -97,8 +96,8 @@ mixin ProductsModel on ConnectedProductsModel {
           'http://newspositivas.com/wp-content/uploads/2018/07/naom_5a4f9bdfb0e6b.jpg',
       'price': price,
       'address': address,
-      'userEmail': _authenticatedUser.email,
-      'userId': _authenticatedUser.id
+      'userEmail': selectedProduct.userEmail,
+      'userId': selectedProduct.userId
     };
     return http
         .put(
@@ -139,9 +138,10 @@ mixin ProductsModel on ConnectedProductsModel {
 
   void selectProduct(int index) {
     _selProductIndex = index;
-    if (index != null) {
-      notifyListeners();
-    }
+    // if (index != null) {
+    //   notifyListeners();
+    // }
+    notifyListeners();
   }
 
   void fetchProducts() {
@@ -151,7 +151,6 @@ mixin ProductsModel on ConnectedProductsModel {
         .get(
             'https://flutter-course-products-10856.firebaseio.com/products.json')
         .then((http.Response response) {
-      _isLoading = false;
       final List<Product> fetchedProductList = [];
       final Map<String, dynamic> productListData = json.decode(response.body);
       if (productListData == null) {
@@ -179,7 +178,7 @@ mixin ProductsModel on ConnectedProductsModel {
 
   void toggleProductFavoriteStatus() {
     final bool isCurrentlyFavorite = selectedProduct.isFavorite;
-    final bool newFavoriteState = !isCurrentlyFavorite;
+    final bool newFavoriteStatus = !isCurrentlyFavorite;
     // TODO: Refactor and simplify?
     final Product updatedProduct = Product(
         title: selectedProduct.title,
@@ -189,7 +188,7 @@ mixin ProductsModel on ConnectedProductsModel {
         address: selectedProduct.address,
         userEmail: selectedProduct.userEmail,
         userId: selectedProduct.userId,
-        isFavorite: newFavoriteState);
+        isFavorite: newFavoriteStatus);
     _products[selectedProductIndex] = updatedProduct;
     notifyListeners();
   }
