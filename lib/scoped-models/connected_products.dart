@@ -9,12 +9,12 @@ import '../models/user.dart';
 
 mixin ConnectedProductsModel on Model {
   List<Product> _products = [];
-  int _selProductIndex;
+  String _selProductId;
   User _authenticatedUser;
   bool _isLoading = false;
 
   void unselectProduct() {
-    _selProductIndex = null;
+    _selProductId = null;
     notifyListeners();
   }
 
@@ -70,14 +70,22 @@ mixin ProductsModel on ConnectedProductsModel {
   }
 
   int get selectedProductIndex {
-    return _selProductIndex;
+    return _products.indexWhere((Product product) {
+      return product.id == _selProductId;
+    });
+  }
+
+  String get selectedProductId {
+    return _selProductId;
   }
 
   Product get selectedProduct {
-    if (selectedProductIndex == null) {
+    if (selectedProductId == null) {
       return null;
     }
-    return _products[selectedProductIndex];
+    return _products.firstWhere((Product product) {
+      return product.id == _selProductId;
+    });
   }
 
   bool get displayFavoritesOnly {
@@ -124,7 +132,7 @@ mixin ProductsModel on ConnectedProductsModel {
     final deletedProductId = selectedProduct.id;
     _products.removeAt(selectedProductIndex);
     // TODO: change to unselectProduct?
-    _selProductIndex = null;
+    _selProductId = null;
     notifyListeners();
 
     http
@@ -136,8 +144,8 @@ mixin ProductsModel on ConnectedProductsModel {
     });
   }
 
-  void selectProduct(int index) {
-    _selProductIndex = index;
+  void selectProduct(String productId) {
+    _selProductId = productId;
     // if (index != null) {
     //   notifyListeners();
     // }
@@ -181,6 +189,7 @@ mixin ProductsModel on ConnectedProductsModel {
     final bool newFavoriteStatus = !isCurrentlyFavorite;
     // TODO: Refactor and simplify?
     final Product updatedProduct = Product(
+        id: selectedProduct.id,
         title: selectedProduct.title,
         description: selectedProduct.description,
         price: selectedProduct.price,
