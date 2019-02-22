@@ -38,11 +38,11 @@ mixin ConnectedProductsModel on Model {
             'https://flutter-course-products-10856.firebaseio.com/products.json',
             body: json.encode(productData))
         .then((http.Response response) {
-          if (response.statusCode != 200 && response.statusCode != 201) {
-            _isLoading = false;
-            notifyListeners();
-            return false;
-          }
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
       final Map<String, dynamic> responseData = json.decode(response.body);
       final Product newProduct = Product(
           id: responseData['name'],
@@ -57,6 +57,10 @@ mixin ConnectedProductsModel on Model {
       _isLoading = false;
       notifyListeners();
       return true;
+    }).catchError((error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
     });
   }
 }
@@ -98,7 +102,7 @@ mixin ProductsModel on ConnectedProductsModel {
     return _showFavorites;
   }
 
-  Future<Null> updateProduct(String title, String description, String image,
+  Future<bool> updateProduct(String title, String description, String image,
       double price, String address) {
     _isLoading = true;
     notifyListeners();
@@ -130,10 +134,15 @@ mixin ProductsModel on ConnectedProductsModel {
           address: address);
       _products[selectedProductIndex] = updatedProduct;
       notifyListeners();
+      return true;
+    }).catchError((error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
     });
   }
 
-  void deleteProduct() {
+  Future<bool> deleteProduct() {
     _isLoading = true;
     final deletedProductId = selectedProduct.id;
     _products.removeAt(selectedProductIndex);
@@ -141,12 +150,17 @@ mixin ProductsModel on ConnectedProductsModel {
     _selProductId = null;
     notifyListeners();
 
-    http
+    return http
         .delete(
             'https://flutter-course-products-10856.firebaseio.com/products/${deletedProductId}.json')
         .then((http.Response response) {
       _isLoading = false;
       notifyListeners();
+      return true;
+    }).catchError((error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
     });
   }
 
@@ -164,7 +178,7 @@ mixin ProductsModel on ConnectedProductsModel {
     return http
         .get(
             'https://flutter-course-products-10856.firebaseio.com/products.json')
-        .then((http.Response response) {
+        .then<Null>((http.Response response) {
       final List<Product> fetchedProductList = [];
       final Map<String, dynamic> productListData = json.decode(response.body);
       if (productListData == null) {
@@ -188,6 +202,10 @@ mixin ProductsModel on ConnectedProductsModel {
       _isLoading = false;
       notifyListeners();
       _selProductId = null;
+    }).catchError((error) {
+      _isLoading = false;
+      notifyListeners();
+      return false;
     });
   }
 
