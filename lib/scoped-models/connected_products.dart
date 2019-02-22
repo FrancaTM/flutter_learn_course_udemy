@@ -19,7 +19,7 @@ mixin ConnectedProductsModel on Model {
   }
 
   Future<bool> addProduct(String title, String description, String image,
-      double price, String address) {
+      double price, String address) async {
     // Refactor _isLoading + notifyListeners?
     _isLoading = true;
     notifyListeners();
@@ -33,11 +33,11 @@ mixin ConnectedProductsModel on Model {
       'userEmail': _authenticatedUser.email,
       'userId': _authenticatedUser.id
     };
-    return http
-        .post(
-            'https://flutter-course-products-10856.firebaseio.com/products.json',
-            body: json.encode(productData))
-        .then((http.Response response) {
+
+    try {
+      final http.Response response = await http.post(
+          'https://flutter-course-products-10856.firebaseio.com/products.json',
+          body: json.encode(productData));
       if (response.statusCode != 200 && response.statusCode != 201) {
         _isLoading = false;
         notifyListeners();
@@ -57,11 +57,16 @@ mixin ConnectedProductsModel on Model {
       _isLoading = false;
       notifyListeners();
       return true;
-    }).catchError((error) {
+    } catch (error) {
       _isLoading = false;
       notifyListeners();
       return false;
-    });
+    }
+    // .catchError((error) {
+    //   _isLoading = false;
+    //   notifyListeners();
+    //   return false;
+    // });
   }
 }
 
