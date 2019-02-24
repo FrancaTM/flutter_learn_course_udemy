@@ -213,7 +213,7 @@ mixin ProductsModel on ConnectedProductsModel {
     }).catchError((error) {
       _isLoading = false;
       notifyListeners();
-      return false;
+      return;
     });
   }
 
@@ -242,6 +242,10 @@ mixin ProductsModel on ConnectedProductsModel {
 }
 
 mixin UserModel on ConnectedProductsModel {
+  User get user {
+    return _authenticatedUser;
+  }
+
   Future<Map<String, dynamic>> authenticate(String email, String password,
       [AuthMode mode = AuthMode.Login]) async {
     _isLoading = true;
@@ -280,6 +284,8 @@ mixin UserModel on ConnectedProductsModel {
           email: email,
           token: responseData['idToken']);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('userId', responseData['localId']);
+      prefs.setString('userEmail', email);
       prefs.setString('token', responseData['idToken']);
     } else if (responseData['error']['message'] == 'EMAIL_EXISTS') {
       message = 'This email already exists';
@@ -295,8 +301,13 @@ mixin UserModel on ConnectedProductsModel {
 
   void autoAuthenticate() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String token = prefs.get('toke');
-    if (token != null) {}
+    final String token = prefs.get('token');
+    if (token != null) {
+      final String userId = prefs.get('userId');
+      final String userEmail = prefs.get('userEmail');
+      _authenticatedUser = User(id: userId, email: userEmail, token: token);
+      notifyListeners();
+    }
   }
 }
 
