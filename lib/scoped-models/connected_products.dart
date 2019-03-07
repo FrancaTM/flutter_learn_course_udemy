@@ -197,14 +197,19 @@ mixin ProductsModel on ConnectedProductsModel {
       }
       productListData.forEach((String productId, dynamic productData) {
         final Product product = Product(
-            id: productId,
-            title: productData['title'],
-            description: productData['description'],
-            price: productData['price'],
-            image: productData['image'],
-            userEmail: productData['userEmail'],
-            userId: productData['userId'],
-            address: productData['address']);
+          id: productId,
+          title: productData['title'],
+          description: productData['description'],
+          price: productData['price'],
+          image: productData['image'],
+          userEmail: productData['userEmail'],
+          userId: productData['userId'],
+          address: productData['address'],
+          isFavorite: productData['wishlistUsers'] == null
+              ? false
+              : (productData['wishlistUsers'] as Map<String, dynamic>)
+                  .containsKey(_authenticatedUser.id),
+        );
         fetchedProductList.add(product);
       });
       _products = fetchedProductList;
