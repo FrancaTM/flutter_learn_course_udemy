@@ -28,6 +28,10 @@ dependencies:
 
   rxdart: ^0.21.0
 
+  map_view:
+    git:
+      url: git://github.com/Eimji/flutter_google_map_view.git
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
