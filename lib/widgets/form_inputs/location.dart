@@ -12,13 +12,30 @@ class LocationInput extends StatefulWidget {
 }
 
 class _LocationInputState extends State<LocationInput> {
+  Uri _staticMapUri;
   final FocusNode _addressInputFocusNode = FocusNode();
+
+  void getStaticMap() {
+    final StaticMapProvider staticMapViewProvider =
+        StaticMapProvider('AIzaSyCbFF3voYT5Rf-AOibVTigPGdjFgWG3gVE');
+    final Uri staticMapUri = staticMapViewProvider.getStaticUriWithMarkers(
+      [Marker('position', 'Position', 41.40338, 2.17403)],
+      center: Location(41.40338, 2.17403),
+      width: 500,
+      height: 300,
+      maptype: StaticMapViewType.roadmap,
+    );
+    setState(() {
+      _staticMapUri = staticMapUri;
+    });
+  }
 
   void _updateLocation() {}
 
   @override
   void initState() {
     super.initState();
+    getStaticMap();
     _addressInputFocusNode.addListener(_updateLocation);
   }
 
@@ -38,6 +55,8 @@ class _LocationInputState extends State<LocationInput> {
             focusNode: _addressInputFocusNode,
           ),
         ),
+        SizedBox(height: 10.0),
+        Image.network(_staticMapUri.toString()),
       ],
     );
   }
