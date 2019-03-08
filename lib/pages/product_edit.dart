@@ -146,6 +146,8 @@ class _ProductEditPageState extends State<ProductEditPage> {
               _buildPriceTextField(product),
               _buildAddressTextField(product),
               SizedBox(height: 10.0),
+              
+              SizedBox(height: 10.0),
               _buildSubmitButton(),
               // GestureDetector(
               //   onTap: _submitForm,
