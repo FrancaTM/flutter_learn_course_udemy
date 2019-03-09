@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:map_view/map_view.dart';
+import 'package:http/http.dart' as http;
 
 import '../helpers/ensure_visible.dart';
 
@@ -14,8 +15,16 @@ class LocationInput extends StatefulWidget {
 class _LocationInputState extends State<LocationInput> {
   Uri _staticMapUri;
   final FocusNode _addressInputFocusNode = FocusNode();
+  final TextEditingController _addressInputController = TextEditingController();
 
-  void getStaticMap() {
+  void getStaticMap(String address) async {
+    if (address.isEmpty) {
+      return;
+    }
+    final Uri uri = Uri.https('maps.googleapis.com', '/maps/api/geocode/json',
+        {'address': address, 'key': 'AIzaSyCbFF3voYT5Rf-AOibVTigPGdjFgWG3gVE'});
+    final http.Response response = await http.get(uri);
+
     final StaticMapProvider staticMapViewProvider =
         StaticMapProvider('AIzaSyCbFF3voYT5Rf-AOibVTigPGdjFgWG3gVE');
     final Uri staticMapUri = staticMapViewProvider.getStaticUriWithMarkers(
@@ -30,7 +39,11 @@ class _LocationInputState extends State<LocationInput> {
     });
   }
 
-  void _updateLocation() {}
+  void _updateLocation() {
+    if (!_addressInputFocusNode.hasFocus) {
+      getStaticMap(_addressInputController.text);
+    }
+  }
 
   @override
   void initState() {
@@ -53,6 +66,8 @@ class _LocationInputState extends State<LocationInput> {
           focusNode: _addressInputFocusNode,
           child: TextFormField(
             focusNode: _addressInputFocusNode,
+            controller: _addressInputController,
+            decoration: InputDecoration(labelText: 'Address'),
           ),
         ),
         SizedBox(height: 10.0),
