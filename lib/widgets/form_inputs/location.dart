@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:map_view/map_view.dart';
@@ -24,17 +26,21 @@ class _LocationInputState extends State<LocationInput> {
     final Uri uri = Uri.https('maps.googleapis.com', '/maps/api/geocode/json',
         {'address': address, 'key': 'AIzaSyCbFF3voYT5Rf-AOibVTigPGdjFgWG3gVE'});
     final http.Response response = await http.get(uri);
+    final decodedResponse = json.decode(response.body);
+    final formattedAddress = decodedResponse['results'][0]['formatted_address'];
+    final coords = decodedResponse['results'][0]['geometry']['location'];
 
     final StaticMapProvider staticMapViewProvider =
         StaticMapProvider('AIzaSyCbFF3voYT5Rf-AOibVTigPGdjFgWG3gVE');
     final Uri staticMapUri = staticMapViewProvider.getStaticUriWithMarkers(
-      [Marker('position', 'Position', 41.40338, 2.17403)],
-      center: Location(41.40338, 2.17403),
+      [Marker('position', 'Position', coords['lat'], coords['lng'])],
+      center: Location(coords['lat'], coords['lng']),
       width: 500,
       height: 300,
       maptype: StaticMapViewType.roadmap,
     );
     setState(() {
+      _addressInputController.text = formattedAddress;
       _staticMapUri = staticMapUri;
     });
   }
@@ -48,7 +54,6 @@ class _LocationInputState extends State<LocationInput> {
   @override
   void initState() {
     super.initState();
-    getStaticMap();
     _addressInputFocusNode.addListener(_updateLocation);
   }
 
