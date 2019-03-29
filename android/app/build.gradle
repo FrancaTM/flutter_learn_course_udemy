@@ -25,7 +25,7 @@ apply plugin: 'com.android.application'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28 // TODO: modified
 
     lintOptions {
         disable 'InvalidPackage'
@@ -34,11 +34,13 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.flutterlearncourse"
-        minSdkVersion 16
-        targetSdkVersion 27
+        minSdkVersion 21 // TODO: modified 16
+        targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        // testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner" // TODO: modified
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -55,7 +57,11 @@ flutter {
 }
 
 dependencies {
+    implementation 'com.google.android.gms:play-services:12.0.0'
+    implementation 'com.android.support:multidex:1.0.3'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    // androidTestImplementation 'com.android.support.test:runner:1.0.2' // TODO: modified
+    // androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2' // TODO: modified
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
 }

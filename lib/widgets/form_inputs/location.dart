@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import 'package:map_view/map_view.dart';
+// import 'package:map_view/map_view.dart';
 import 'package:http/http.dart' as http;
 
 import '../helpers/ensure_visible.dart';
@@ -30,19 +30,19 @@ class _LocationInputState extends State<LocationInput> {
     final formattedAddress = decodedResponse['results'][0]['formatted_address'];
     final coords = decodedResponse['results'][0]['geometry']['location'];
 
-    final StaticMapProvider staticMapViewProvider =
-        StaticMapProvider('AIzaSyCbFF3voYT5Rf-AOibVTigPGdjFgWG3gVE');
-    final Uri staticMapUri = staticMapViewProvider.getStaticUriWithMarkers(
-      [Marker('position', 'Position', coords['lat'], coords['lng'])],
-      center: Location(coords['lat'], coords['lng']),
-      width: 500,
-      height: 300,
-      maptype: StaticMapViewType.roadmap,
-    );
-    setState(() {
-      _addressInputController.text = formattedAddress;
-      _staticMapUri = staticMapUri;
-    });
+    // final StaticMapProvider staticMapViewProvider =
+    //     StaticMapProvider('AIzaSyCbFF3voYT5Rf-AOibVTigPGdjFgWG3gVE');
+    // final Uri staticMapUri = staticMapViewProvider.getStaticUriWithMarkers(
+    //   [Marker('position', 'Position', coords['lat'], coords['lng'])],
+    //   center: Location(coords['lat'], coords['lng']),
+    //   width: 500,
+    //   height: 300,
+    //   maptype: StaticMapViewType.roadmap,
+    // );
+    // setState(() {
+    //   _addressInputController.text = formattedAddress;
+    //   _staticMapUri = staticMapUri;
+    // });
   }
 
   void _updateLocation() {
